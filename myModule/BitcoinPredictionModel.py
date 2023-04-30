@@ -62,11 +62,11 @@ class BTCValuePredictor:
         self.predicted_close_price = predicted_close_price
         self.real_close_price = real_close_price
         mse = mean_squared_error(self.real_close_price, self.predicted_close_price)
-        rems = math.sqrt(mse)
+        rmse = math.sqrt(mse)
         predicted_direction = np.sign(np.diff(self.predicted_close_price))
         actual_direction = np.sign(np.diff(self.real_close_price))
         mda = np.mean(predicted_direction == actual_direction)
-        print("rems:"+rems+"mda:"+mda)
+        print("rmse:"+rmse+"mda:"+mda)
 
     def plot_predictions(self):
         plt.plot(self.real_close_price, color='red', label='Real BTC Value')
@@ -82,5 +82,5 @@ class BTCValuePredictor:
         plt.title('Loss per epoch')
         plt.ylabel('loss')
         plt.xlabel('epoch')
-        plt.legend('train', loc='upper left')
+        plt.legend(['loss' , 'val_loss'], loc='upper left')
         plt.show()
