@@ -3,13 +3,13 @@ from tensorboard import notebook
 
 
 class TestBTCPricePredictor:
-    btc_predictor = BTCValuePredictor('BTC-USD.csv')
+    btc_predictor = BTCValuePredictor('BTC-USD (4).csv')
 
     btc_predictor.prepare_data()
 
-    btc_predictor.create_model(learning_rate=0.001)
+    btc_predictor.create_model(learning_rate=0.01)
 
-    btc_predictor.train_model(batch_size=64, epochs=50)
+    btc_predictor.train_model(batch_size=32, epochs=100)
 
     btc_predictor.predict()
 

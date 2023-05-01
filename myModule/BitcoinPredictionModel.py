@@ -47,9 +47,10 @@ class BTCValuePredictor:
     def create_model(self, learning_rate=0.001):
         self.model = Sequential()
         self.model.add(LSTM(units=16, activation='sigmoid', input_shape=(self.days_num, 1), return_sequences=False))
+        self.model.add(LSTM(units=16, activation='sigmoid', input_shape=(self.days_num, 1), return_sequences=True))
         self.model.add(Dense(units=1))
         opt = keras.optimizers.Adam(learning_rate = learning_rate)
-        self.model.compile(optimizer='adam', loss='mean_squared_error')
+        self.model.compile(optimizer=opt, loss='mean_squared_error')
 
     def train_model(self, batch_size=90, epochs=1000):
         tf_callbacks = tf.keras.callbacks.TensorBoard(log_dir="logs/fit", histogram_freq=1)
@@ -65,10 +66,7 @@ class BTCValuePredictor:
         self.real_close_price = real_close_price
         mse = mean_squared_error(self.real_close_price[1,:], self.predicted_close_price[1,:])
         rmse = math.sqrt(mse)
-        predicted_direction = np.diff(self.predicted_close_price)
-        actual_direction = np.diff(self.real_close_price)
-        mda = np.mean(predicted_direction == actual_direction)
-        print("rmse: {}".format(rmse) + " , mda: {}".format(mda))
+        print("rmse: {}".format(rmse) )
 
     def plot_predictions(self):
         plt.plot(self.real_close_price, color='red', label='Real BTC Value')
