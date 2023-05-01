@@ -10,6 +10,7 @@ from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
 from keras.layers import Dense, LSTM
 import sklearn.metrics
+import keras.optimizers
 
 
 class BTCValuePredictor:
@@ -37,16 +38,17 @@ class BTCValuePredictor:
 
         self.xtrain = train_set[0:len(train_set)]
         self.ytrain = self.dataset_scaled[self.days_num:len(train_set) + self.days_num]
-        self.xtest = test_set[0:len(test_set) - 1]
-        self.ytest = self.dataset_scaled[self.days_num + len(self.xtrain):]
+        self.xtest = test_set[0:len(test_set)]
+        self.ytest = self.dataset_scaled[self.days_num + len(self.xtrain):len(self.dataset_scaled) -1]
 
         self.ytrain = self.ytrain.to_numpy()
         self.ytest = self.ytest.to_numpy()
 
-    def create_model(self):
+    def create_model(self, learning_rate=0.001):
         self.model = Sequential()
-        self.model.add(LSTM(units=16, activation='sigmoid', input_shape=(self.days_num, 1)))
+        self.model.add(LSTM(units=16, activation='sigmoid', input_shape=(self.days_num, 1), return_sequences=False))
         self.model.add(Dense(units=1))
+        opt = keras.optimizers.Adam(learning_rate = learning_rate)
         self.model.compile(optimizer='adam', loss='mean_squared_error')
 
     def train_model(self, batch_size=90, epochs=1000):
@@ -61,12 +63,12 @@ class BTCValuePredictor:
         real_close_price = self.sc.inverse_transform(self.ytest)
         self.predicted_close_price = predicted_close_price
         self.real_close_price = real_close_price
-        mse = mean_squared_error(self.real_close_price, self.predicted_close_price)
+        mse = mean_squared_error(self.real_close_price[1,:], self.predicted_close_price[1,:])
         rmse = math.sqrt(mse)
-        predicted_direction = np.sign(np.diff(self.predicted_close_price))
-        actual_direction = np.sign(np.diff(self.real_close_price))
+        predicted_direction = np.diff(self.predicted_close_price)
+        actual_direction = np.diff(self.real_close_price)
         mda = np.mean(predicted_direction == actual_direction)
-        print("rmse:"+rmse+"mda:"+mda)
+        print("rmse: {}".format(rmse) + " , mda: {}".format(mda))
 
     def plot_predictions(self):
         plt.plot(self.real_close_price, color='red', label='Real BTC Value')
@@ -79,6 +81,7 @@ class BTCValuePredictor:
 
     def plot_loss(self):
         plt.plot(self.history.history['loss'])
+        plt.plot(self.history.history['val_loss'])
         plt.title('Loss per epoch')
         plt.ylabel('loss')
         plt.xlabel('epoch')
