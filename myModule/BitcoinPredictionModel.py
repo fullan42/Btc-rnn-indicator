@@ -49,7 +49,7 @@ class BTCValuePredictor:
         self.model.add(LSTM(units=16, activation='sigmoid', input_shape=(self.days_num, 1), return_sequences=False))
         self.model.add(Dense(units=1))
         opt = keras.optimizers.Adam(learning_rate = learning_rate)
-        self.model.compile(optimizer='adam', loss='mean_squared_error')
+        self.model.compile(optimizer=opt, loss='mean_squared_error')
 
     def train_model(self, batch_size=90, epochs=1000):
         tf_callbacks = tf.keras.callbacks.TensorBoard(log_dir="logs/fit", histogram_freq=1)
