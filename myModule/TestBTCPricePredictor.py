@@ -7,7 +7,7 @@ class TestBTCPricePredictor:
 
     btc_predictor.prepare_data()
 
-    btc_predictor.create_model()
+    btc_predictor.create_model(learning_rate=0.001)
 
     btc_predictor.train_model(batch_size=64, epochs=50)
 
