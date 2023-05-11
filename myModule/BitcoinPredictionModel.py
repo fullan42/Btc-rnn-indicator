@@ -46,8 +46,9 @@ class BTCValuePredictor:
 
     def create_model(self, learning_rate=0.001):
         self.model = Sequential()
-        self.model.add(LSTM(units=16, activation='sigmoid', input_shape=(self.days_num, 1), return_sequences=False))
         self.model.add(LSTM(units=16, activation='sigmoid', input_shape=(self.days_num, 1), return_sequences=True))
+        self.model.add(LSTM(units=16, activation='sigmoid', input_shape=(self.days_num, 1), return_sequences=True))
+        self.model.add(LSTM(units=16, activation='sigmoid', input_shape=(self.days_num, 1), return_sequences=False))
         self.model.add(Dense(units=1))
         opt = keras.optimizers.Adam(learning_rate = learning_rate)
         self.model.compile(optimizer=opt, loss='mean_squared_error')

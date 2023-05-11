@@ -9,7 +9,7 @@ class TestBTCPricePredictor:
 
     btc_predictor.create_model(learning_rate=0.01)
 
-    btc_predictor.train_model(batch_size=32, epochs=100)
+    btc_predictor.train_model(batch_size=32, epochs=400)
 
     btc_predictor.predict()
 
@@ -21,3 +21,5 @@ class TestBTCPricePredictor:
 
     # Start TensorBoard
     notebook.start("--logdir logs")
+
+#%%
