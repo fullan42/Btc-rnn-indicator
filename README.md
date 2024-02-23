@@ -1,7 +1,10 @@
-﻿## Btc-rnn-indicator<br>
+﻿## 
+ Btc-rnn-indicator<br>
  
-﻿##	 Project outline:<br>
-﻿##	Problem definition: Complexity of stock prices for traders and trade platforms.<br>
+﻿##	
+ Project outline:<br>
+﻿##	
+ Problem definition: Complexity of stock prices for traders and trade platforms.<br>
 ﻿#	Purpose: Develop price indicator with RNN try to define next day price <br>
 ﻿#	Neural network method that will be use: Recurrent neural networks method.<br>
 ﻿#	Reason than choosing RNN: particular have received the most success when working with sequences of words and paragraphs, generally called natural language processing. So, input and output style of this method fitting perfectly to stock and bitcoin datasets. Especially many to one perspective.<br>
